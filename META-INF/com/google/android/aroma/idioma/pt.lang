@@ -1,0 +1,46 @@
+﻿#[-----------------------------------------------------------------------------]
+#[   AROMA                                                                     ]
+#[   UKAz-XDA PT-BR                                                            ]
+#[-----------------------------------------------------------------------------]
+#[   Modification is not permitted, or use without my permission.              ]
+#[   Nao permitido alteracao, ou usa-la sem a minha permissão.                 ]
+#[-----------------------------------------------------------------------------]
+text_ok=Está bem
+text_next=Próximo
+text_back=Voltar
+text_yes=Sim
+text_no=Não
+text_about=Sobre
+text_calibrating=Ferramentas de calibração
+text_quit=Sair da instalação
+text_quit_msg=Tem certeza que deseja encerrar o instalador?
+
+common.for=Para
+
+langtest.title=Teste de Linguagem
+langtest.multiline=Este texto está localizado em langs/pt.lang\
+Use a barra invertida antes de inserir para adicionar uma nova linha\
+\
+Você também pode fazer <b>Formatação</b> dentro do recurso de string de linguagem.\
+\
+Obrigado por usar o AROMA Installer
+
+
+themes.title=Selecione o tema
+themes.desc=Selecione o tema do instalador que deseja usar neste teste de instalação:
+
+welcome.title=Bem-vindo
+welcome.text1=Você está prestes a instalar
+welcome.text2=AROMA Installer foi o primeiro e único Touch and Customizable ANDROID ROM Installer no mundo.
+welcome.version=VERSÃO
+welcome.codename=NOMECODICO
+welcome.updated=ATUALIZACAO
+welcome.next=Pressione Avançar para continuar a instalação...
+
+terms.title=Termos e Condições
+terms.desc=Leia atentamente os Termos e Condições do Instalador AROMA abaixo.
+terms.check=Eu concordo com estes Termos e Condições...
+terms.confirm=Verifique o acordo...
+
+changelog.title=Changelog
+changelog.desc=AROMA Installer Changelog

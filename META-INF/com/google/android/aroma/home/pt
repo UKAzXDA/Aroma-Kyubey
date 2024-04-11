@@ -1,0 +1,86 @@
+﻿#[=========================================================================================================================]
+#[  - UKΛz-XDΛ Developer    ||  Modification is not permitted, or use without my permission.      U K Λ z - X D Λ          ]
+#[  - AROMA IT'S AN ANIME   ||  Não permitido alteracao, ou usa-la sem a minha permissão.     Written by @UKAzXDA 17y >.<  ]
+#[=========================================================================================================================]
+
+		loadlang("idioma/pt.lang");
+		menubox("","<@center><b>"+ini_get("rom_name")+"","","home.pt.prop",
+		"Instalar", "<#selectbg_g>"+ini_get("rom_name")+"", "@d",
+		"System Info", "Informaçoes", "@a",
+		"Remover Apps", "Apps do system", "@c",
+		"Customização", "Modos para rom", "@e",
+		"Instalador", "Configuração", "@b",
+		"Termos de uso:", "License pt-br", "@g");
+
+if prop("home.pt.prop","selected")=="1" then
+if confirm("Iniciar instalação?", "", "No","Sim") == "no" then back("1"); endif;
+	ini_set("text_next", "Finalizar");
+	install("","\n<#3c3c3c>Updating...","@d","\n<#3c3c3c>Finalizado!");
+	if file_getprop("/tmp/ukazxda/Kyubey.prop","erro") == "1" then
+	if confirm("Reboot?", "", "No","Yes") == "yes" then
+	reboot("onfinish"); exit(""); endif; exit(""); endif;
+	alert("<b><#791919>ERRO","<@center><b>Algo deu errado! :(", "");
+	exit("");
+endif;
+
+if prop("home.pt.prop","selected")=="2" then
+ini_set("text_next", " ");
+	viewbox("","\n<b>System Info\n\n\n</b>"+
+	"ROM\t\t\t: <#3c3c3c>"+ini_get("rom_name")+"</#>\n"+
+	"OneUI\t\t\t: <#3c3c3c>1.1</#>\n"+
+	"Android\t\t\t: <#3c3c3c>9</#>\n\n"+
+	"Arquitetura\t\t: <#3c3c3c>ARM32</#>\n"+
+	"Manufacturer\t: <#3c3c3c>Samsung</#>\n"+
+	"Versão\t\t\t: <#3c3c3c>"+ini_get("rom_version")+"</#>\n"+
+	"data\t\t\t: <#3c3c3c>"+ini_get("rom_date")+"</#>\n\n"+
+	"ROM Suporta\t: <#3c3c3c>G610X</#>\n"+
+	"Seu modelo\t\t: <#3c3c3c>"+ini_get("rom_device")+"</#>\n"+
+	"Manufacturer\t: <#3c3c3c>"+sysprop("ro.product.manufacturer")+"</#>\n"+
+	"CPU\t\t\t: <#3c3c3c>"+sysprop("ro.product.cpu.abi")+"</#>\n\n"+
+	"System Size\t\t: <#3c3c3c>"+getdisksize("/system","m")+"/MB</#>\n"+
+	"System Free\t\t: <#3c3c3c>"+getdiskfree("/system","m")+"/MB</#>\n"+
+	"Vendor Size\t\t: <#3c3c3c>"+getdisksize("/vendor","m")+"/MB</#>\n"+
+	"Vendor Free\t\t: <#3c3c3c>"+getdiskfree("/vendor","m")+"/MB</#>\n"+
+	"Data Free\t\t: <#3c3c3c>"+getdiskfree("/data","m")+"/MB</#>\n","@a");
+back("2");
+endif;
+
+if prop("home.pt.prop","selected")=="3" then
+	ini_set("text_next", " ");
+		alert("<b><#3c3c3c>Pagina indisponivel!","", "");
+	back("1");
+endif;
+
+if prop("home.pt.prop","selected")=="4" then
+	ini_set("text_next", " ");
+		form("","<b><#3c3c3c>Customização:</b>","@e","CUSTOM.prop",
+		"CUSTOM","<#3c3c3c>Navbar","","group",
+			"NAVBAR","    Barra de navegação", "", "check",
+		"KERNEL","<#3c3c3c>Kernel","","group",
+			"ORE","    OREO-KERNEL.img", "", "select.selected",
+			"CRO","    CRONOS-KERNEL.img", "", "select",
+		"CUSTOM","","","group");
+	back("2");
+endif;
+
+#==========================================================================================#
+# Backup code: "VENDOR","    INSTALL VENDOR:", "    "+ini_get("rom_name")+"", "check.checked", #
+#==========================================================================================#
+if prop("home.pt.prop","selected")=="5" then
+	ini_set("text_next", " ");
+		form("","<b><#3c3c3c>Instalador Config:</b>","@b","CONFIG.prop",
+		"CONFIG","","","group",
+			"SYSTEM","    INSTALL SYSTEM:", "    "+ini_get("rom_name")+"", "check.checked",
+			"KERNEL","    INSTALL KERNEL:",  "    Boot.img", "check.checked",
+		  "WIPEDATA","    WIPE DATA:",   "    Formate a data\n<#791919>    Recomendado!</#>", "check.checked",
+			"REBOOT","    REBOOT AUTO:", "    Reboot System", "check",
+		"CONFIG","","","group");
+	back("2");
+endif;
+
+if prop("home.pt.prop","selected")=="6" then
+    textdialog("<#3c3c3c>Termos de uso:",resread("license/license.pt.txt"));
+	back("1");
+endif;
+
+	alert("<b><#791919>ERRO","<@center><b>Algo deu errado!(Aroma)", ""); 
