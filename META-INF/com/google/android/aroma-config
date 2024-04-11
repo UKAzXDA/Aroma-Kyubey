@@ -1,0 +1,16 @@
+﻿#[=========================================================================================================================]
+#[  - UKΛz-XDΛ Developer    ||  Modification is not permitted, or use without my permission.      U K Λ z - X D Λ          ]
+#[  - AROMA IT'S AN ANIME   ||  Não permitido alteracao, ou usa-la sem a minha permissão.     Written by @UKAzXDA 17y >.<  ]
+#[=========================================================================================================================]
+ini_set("rom_name", "<#3c3c3c>LIMPOS");ini_set("rom_version", "<#3c3c3c>2.0");
+ini_set("rom_device", "<#3c3c3c>on7xelte");ini_set("rom_date", "<#3c3c3c>27-05-2023");
+ini_set("dp","7"); loadlang("idioma/en.lang");
+fontresload( "0", "fonte/GoogleSans-Regular.ttf;fonte/GoogleSans-Medium.ttf;", "15" );
+fontresload( "1", "fonte/GoogleSans-Regular.ttf;fonte/GoogleSans-Medium.ttf;", "20" );
+ini_set("rom_author","<#3c3c3c>@UKAzXDA"); theme("THEME");
+ini_set("force_colorspace","rgba");
+
+menubox("","<b>Select the language:</b>","@f","home.prop","English", "Welcome!", "@eua","Portugues", "Bem-vindo!", "@brazil");
+if prop("home.prop","selected")=="1" then include("home/en"); endif;
+if prop("home.prop","selected")=="2" then include("home/pt"); endif;
+alert("<#selectbg_g><b><#791919>ERRO","<@center><b>Something went wrong!(Aroma)", ""); 
