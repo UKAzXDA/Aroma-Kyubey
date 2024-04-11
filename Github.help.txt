@@ -1,0 +1,4 @@
+git status - Verificar o estado atual do repositório.
+git add . - Adicionar todas as mudanças ao staging area.
+git commit -m "sua mensagem" - Commitar as mudanças com uma mensagem explicativa.
+git push - Empurrar as mudanças para o repositório remoto.
