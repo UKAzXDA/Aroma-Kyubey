@@ -11,3 +11,5 @@ git tag -a v1.1.0 -m "Release version 1.1.0"
 git push origin v1.1.0
 
 git remote set-url origin git@github.com:UKAzXDA/Aroma-Kyubey.git
+git push origin main --force
+git push origin main
