@@ -13,3 +13,12 @@ git push origin v1.1.0
 git remote set-url origin git@github.com:UKAzXDA/Aroma-Kyubey.git
 git push origin main --force
 git push origin main
+
+git config --global user.name "Seu Nome"
+git config --global user.email "seu.email@exemplo.com"
+git remote add origin https://github.com/seu-usuario/seu-repositorio.git
+ssh-keygen -t ed25519 -C "seu.email@exemplo.com"
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+cat ~/.ssh/id_ed25519.pub
+ssh -T git@github.com
