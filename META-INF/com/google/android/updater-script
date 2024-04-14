@@ -75,7 +75,7 @@ if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_device") == "1" then #[DEVICE
 			run_program("/sbin/sh","/tmp/ukazxda/kyubey.sh","dummy", "1","create_vendor");
 			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center><#19441d>Feito!</#>");ui_print(" ");ui_print("<@center><b><#3c3c3c>Flash a ROM novamente!</#>"); endif;
 			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center><#19441d>Done!</#>");ui_print(" ");ui_print("<@center><b><#3c3c3c>Flash the ROM again!</#>"); endif;
-			sleep(10); ui_print("<@center>Reboot recovery..."); sleep(2); run_program("/sbin/sh", "-c", "reboot recovery"); abort(" "); # Finalizando script
+			sleep(10); ui_print("<@center>Reboot recovery..."); sleep(2); run_program("/sbin/sh", "-c", "reboot recovery"); delete("/tmp/ukazxda/kyubey.sh"); abort(" "); # Finalizando script
 		endif;
 	endif;
 	#=======================================#
@@ -357,8 +357,8 @@ if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_vendor_kyu") == "1" then #[VE
 		ifelse(is_mounted("/system"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM", "/system"));
 		ifelse(is_mounted("/system"), unmount("/system"));
 		delete("/tmp/ukazxda/kyubey.sh");
-		
 		abort(" "); # Finalizando script
+
 endif; #[VENDOR_BLOCK]
 endif; #[KYUBEN_SH]
 endif; #[DEVICE_BLOCK]
@@ -372,7 +372,7 @@ endif; #[DEVICE_BLOCK]
 	if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center><b>Desculpe, mas acho que falhei!"); endif;
 	if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center><b>Sorry, but I think I failed!"); endif;
 	ui_print("<@center><#791919>Kyubey.sh!</#></b>"); ui_print(" "); ui_print("<b><@center><b><#selectbg_g><#791919>Erro!</#></#></b>");
-	set_progress(1.0);
+	set_progress(1.0); delete("/tmp/ukazxda/kyubey.sh");
 	abort(" "); # Finalizando script
 #===[>.<]
 delete("/tmp/ukazxda/kyubey.sh");
