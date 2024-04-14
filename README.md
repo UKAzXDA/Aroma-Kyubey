@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/UKAzXDA/UKAz-XDA/main/20240414_031804.jpg" style="border-radius: 20px;">
+<img src="https://raw.githubusercontent.com/UKAzXDA/UKAz-XDA/main/20240414_031804.jpg">
 
 # Aroma-Kyubey  Version 3.00b1
 
