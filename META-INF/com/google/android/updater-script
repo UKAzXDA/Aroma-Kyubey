@@ -1,8 +1,39 @@
 #[=========================================================================================================================]
 #[    UKΛz-XDΛ Developer    ||  Modification is not permitted, or use without my permission.      U K Λ z - X D Λ          ]
-#[     AROMA My kyubey' 6   ||  Não permitido alteracao, ou usa-la sem a minha permissão.     Written by @UKAzXDA 19y >.<  ]
+#[     AROMA My kyubey' 7   ||  Não permitido alteracao, ou usa-la sem a minha permissão.     Written by @UKAzXDA 19y >.<  ]
 #[=========================================================================================================================]
 	set_progress(0.0); ui_print("<@center><b>UKΛz-XDΛ</b>"); ui_print(" ");
+
+#===#
+	if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_device") == "1" then
+		if file_getprop("/tmp/aroma/CONFIG.prop", "REPARTITION") == "1" then
+			ui_print(" ");ui_print(" ");ui_print("<@center><#4c1239><b>Kyubey</b></#>");
+			ifelse(is_mounted("/system"), unmount("/system"));
+			ifelse(is_mounted("/vendor"), unmount("/vendor"));
+			ifelse(is_mounted("/cache"), unmount("/cache"));
+			ifelse(is_mounted("/data"), unmount("/data"));
+			ifelse(is_mounted("/odm"), unmount("/odm")); ui_print(" "); 
+			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Reparticionando..."); endif;
+			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Repartitioning..."); endif;
+			run_program("/sbin/sh","/tmp/ukazxda/kyubey.sh","dummy", "1","repartition");
+			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Particionamento <#19441d>feita!"); endif;
+			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Partitioning <#19441d>done!"); endif;
+			ifelse(is_mounted("/system"), unmount("/system"));
+			ifelse(is_mounted("/vendor"), unmount("/vendor"));
+			ifelse(is_mounted("/cache"), unmount("/cache"));
+			ifelse(is_mounted("/data"), unmount("/data"));
+			ifelse(is_mounted("/odm"), unmount("/odm"));
+			format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/ODM", "0", "/odm");
+			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print(" ");ui_print("<@center><b><#3c3c3c>Flash a ROM novamente!</#>"); endif;
+			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print(" ");ui_print("<@center><b><#3c3c3c>Flash the ROM again!</#>"); endif;
+			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center><#791919>Atenção!</#>: Antes de flash a ROM, faça o <#19441d>FORMAT DATA</#> ..yes"); endif;
+			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center><#791919>Warning!</#>: Before flashing the ROM, do the <#19441d>FORMAT DATA</#> ..yes"); endif;
+			delete_recursive("/tmp/ukazxda"); run_program("/sbin/sh", "-c", "sleep 20");ui_print(" ");ui_print(" ");
+			ui_print("<@center>Reboot recovery..."); sleep(3); run_program("/sbin/sh", "-c", "reboot recovery");
+			abort(" "); # Finalizando script
+		endif;
+	endif;
+#===#
 
 	#===================#
 	# Start fix inicial #
@@ -17,32 +48,28 @@
 	run_program("/sbin/sh", "-c", "shmod -R 777 /tmp/ukazxda/*");
 
 	#================================================#
-	# Préconfiguração para instalação não regaregada #
+	# Préconfiguração para instalação não recaregada #
 	#================================================#
+	run_program("/sbin/sh", "-c", "echo 'REPARTITION=0' >> /tmp/aroma/CONFIG.prop");
 	run_program("/sbin/sh", "-c", "echo 'SYSTEM=1' >> /tmp/aroma/CONFIG.prop");
 	run_program("/sbin/sh", "-c", "echo 'VENDOR=1' >> /tmp/aroma/CONFIG.prop");
 	run_program("/sbin/sh", "-c", "echo 'KERNEL=1' >> /tmp/aroma/CONFIG.prop");
 	run_program("/sbin/sh", "-c", "echo 'WIPEDATA=1' >> /tmp/aroma/CONFIG.prop");
-	run_program("/sbin/sh", "-c", "echo 'KERNEL=ORE' >> /tmp/aroma/CUSTOM.prop");
-	run_program("/sbin/sh", "-c", "echo 'NAVBAR=0' >> /tmp/aroma/CUSTOM.prop");
 
-	#===========================================================================================#
-	# Verificar se Kyubey.prop possue a configuração de identifição de rom treble ou non-treble #
-	#===========================================================================================#
-	if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "true" || file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "false" then
-	#[KYUBEY_SH]
-	
-	
+#===========================================================================================#
+# Verificar se Kyubey.prop possue a configuração de identifição de rom treble ou non-treble #
+#===========================================================================================#
+if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "true" || file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "false" then #[KYUBEY_SH]
+
 	#============================================================#
 	# Criar a identifição de idioma para script kyubey interagir #
 	#============================================================#
 	if file_getprop("/tmp/aroma/home.prop","selected") == "2" then run_program("/sbin/sh", "-c", ">> /tmp/ukazxda/Kyubey/pt"); endif;
 	if file_getprop("/tmp/aroma/home.prop","selected") == "1" then run_program("/sbin/sh", "-c", ">> /tmp/ukazxda/Kyubey/en"); endif;
 
-
-	#===============================================#
-	# Verifição do dispositivo + partição do vendor #
-	#===============================================#
+	#=====================================================================#
+	# Verifição do dispositivo + partição do vendor + Volume de partiçoes #
+	#=====================================================================#
 	run_program("/sbin/sh","/tmp/ukazxda/kyubey.sh","dummy", "1","check_device");
 	run_program("/sbin/sh","/tmp/ukazxda/kyubey.sh","dummy", "1","check_vendor");
 	run_program("/sbin/sh","/tmp/ukazxda/kyubey.sh","dummy", "1","check_volume");
@@ -60,309 +87,283 @@
 		abort(" "); # Finalizando script
 	endif;
 
-
-if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_device") == "1" then #[DEVICE_BLOCK]
-	#===========================================#
-	# Criar repartição do vendor caso não tenha #
-	#===========================================#
-	if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "true" then
-		if file_getprop("/tmp/ukazxda/Kyubey.prop","check_vendor") == "0" then
-			ifelse(is_mounted("/system"), unmount("/system"));
-			format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM", "0", "/system");
-			run_program("/sbin/sh", "/tmp/ukazxda/kyubey.sh", "wipe_data");
-			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><@center>Wipe system data... <#19441d>feito!</#>"); endif;
-			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><@center>Wipe system data... <#19441d>done!</#>"); endif;
-			run_program("/sbin/sh","/tmp/ukazxda/kyubey.sh","dummy", "1","create_vendor");
-			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center><#19441d>Feito!</#>");ui_print(" ");ui_print("<@center><b><#3c3c3c>Flash a ROM novamente!</#>"); endif;
-			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center><#19441d>Done!</#>");ui_print(" ");ui_print("<@center><b><#3c3c3c>Flash the ROM again!</#>"); endif;
-			sleep(10); ui_print("<@center>Reboot recovery..."); sleep(2); run_program("/sbin/sh", "-c", "reboot recovery"); delete("/tmp/ukazxda/kyubey.sh"); abort(" "); # Finalizando script
+	if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_device") == "1" then #[DEVICE_BLOCK_1]
+	
+		#===========================================#
+		# Criar repartição do vendor caso não tenha #
+		#===========================================#
+		if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "true" then
+			if file_getprop("/tmp/ukazxda/Kyubey.prop","check_vendor") == "0" then
+				ifelse(is_mounted("/system"), unmount("/system"));
+				format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM", "0", "/system");
+				run_program("/sbin/sh", "/tmp/ukazxda/kyubey.sh", "wipe_data");
+				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><@center>Wipe system data... <#19441d>feito!</#>"); endif;
+				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><@center>Wipe system data... <#19441d>done!</#>"); endif;
+				run_program("/sbin/sh","/tmp/ukazxda/kyubey.sh","dummy", "1","create_vendor");
+				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center><#19441d>Feito!</#>");ui_print(" ");ui_print("<@center><b><#3c3c3c>Flash a ROM novamente!</#>"); endif;
+				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center><#19441d>Done!</#>");ui_print(" ");ui_print("<@center><b><#3c3c3c>Flash the ROM again!</#>"); endif;
+				sleep(10); ui_print("<@center>Reboot recovery..."); sleep(2); run_program("/sbin/sh", "-c", "reboot recovery"); delete("/tmp/ukazxda/kyubey.sh"); abort(" "); # Finalizando script
+			endif;
 		endif;
-	endif;
-	#=======================================#
-	#  Aviso de espaço insuficiente system  #
-	#=======================================#
-	if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_volume_system") == "0" then
-		ui_print(" "); ui_print("<#4c1239><@center><b>Kyubey</b></#>");delete("/tmp/ukazxda/kyubey.sh");
-		if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Espaço insuficiente na partição do sistema!"); endif;
-		if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Insufficient space on the system partition!"); endif;
-		run_program("/sbin/sh", "-c", "echo 'repartition_flash=1' >> /tmp/ukazxda/Kyubey.prop");
-	endif;
-	#=======================================#
-	#  Aviso de espaço insuficiente vendor  #
-	#=======================================#
-	if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_volume_vendor") == "0" then
-		ui_print(" "); ui_print("<#4c1239><@center><b>Kyubey</b></#>");delete("/tmp/ukazxda/kyubey.sh");
-		if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Espaço insuficiente na partição do vendor!"); endif;
-		if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Insufficient space on the system vendor!"); endif;
-		run_program("/sbin/sh", "-c", "echo 'repartition_flash=1' >> /tmp/ukazxda/Kyubey.prop");
-	endif;
-	if file_getprop("/tmp/ukazxda/Kyubey.prop", "repartition_flash") == "1" then
-		ifelse(is_mounted("/system"), unmount("/system"));
-		ifelse(is_mounted("/vendor"), unmount("/vendor"));
-		ifelse(is_mounted("/cache"), unmount("/cache"));
-		ifelse(is_mounted("/data"), unmount("/data"));
-		ifelse(is_mounted("/odm"), unmount("/odm"));
-		if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Reparticionando...!"); endif;
-		if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Repartitioning...!"); endif;
-		run_program("/sbin/sh","/tmp/ukazxda/kyubey.sh","dummy", "1","repartition");
-		ifelse(is_mounted("/system"), unmount("/system"));
-		ifelse(is_mounted("/vendor"), unmount("/vendor"));
-		ifelse(is_mounted("/cache"), unmount("/cache"));
-		ifelse(is_mounted("/data"), unmount("/data"));
-		ifelse(is_mounted("/odm"), unmount("/odm"));
-		format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/ODM", "0", "/odm");
-		if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print(" ");ui_print("<@center><b><#3c3c3c>Flash a ROM novamente!</#>"); endif;
-		if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print(" ");ui_print("<@center><b><#3c3c3c>Flash the ROM again!</#>"); endif;
-		if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Atenção!: Antes de flash a ROM, faça o FORMAT DATA.. yes"); endif;
-		if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Warning!: Before flashing the ROM, do the FORMAT DATA.. yes"); endif;
-		run_program("/sbin/sh", "-c", "sleep 20");
-		run_program("/sbin/sh", "-c", "reboot recovery");
-	endif;
-endif; #[DEVICE_BLOCK]
+	
+		#=======================================#
+		#  Aviso de espaço insuficiente system  #
+		#=======================================#
+		if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_volume") == "0" then
+			ui_print(" "); ui_print("<#4c1239><@center><b>Kyubey</b></#>");
+			run_program("/sbin/sh", "-c", "echo erro=0 >> /tmp/ukazxda/Kyubey.prop");
+			if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_volume_system") == "0" then
+				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Espaço insuficiente na partição do sistema!"); endif;
+				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Insufficient space on the system partition!"); endif;
+			endif;
+			if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_volume_vendor") == "0" then
+				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Espaço insuficiente na partição do vendor!"); endif;
+				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Insufficient space on the system vendor!"); endif;
+			endif; abort(" "); # Finalizando 
+		endif;
+	endif; #[DEVICE_BLOCK_1]
 
-	#===================================================#
-	# Criar falsa verição de vendor para rom non-treble #
-	#===================================================#
+	#=======================================================#
+	# Criar falsa verificação de vendor para rom non-treble #
+	#=======================================================#
 	if file_getprop("/tmp/ukazxda/Kyubey.prop","check_vendor") == "1" || file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "false" then
 		run_program("/sbin/sh", "-c", "echo 'check_vendor_kyu=1' >> /tmp/ukazxda/Kyubey.prop");
 	endif;
 
-#=============================================#
-# Area celada por verifição apenas a aprovada #
-#=============================================#
-if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_device") == "1" then #[DEVICE_BLOCK]
-if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_vendor_kyu") == "1" then #[VENDOR_BLOCK]
+	#===============================================#
+	# Area celada por verificação apenas a aprovada #
+	#===============================================#
+	if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_device") == "1" then #[DEVICE_BLOCK_2]
+		if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_vendor_kyu") == "1" then #[VENDOR_BLOCK]
 
-	#===============================#
-	# Formatação do preload e cache #
-	#===============================#
-	ifelse(is_mounted("/cache"), unmount("/cache"));
-	ifelse(is_mounted("/preload"), unmount("/preload"));
-	format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/CACHE", "0", "/cache");
-	format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/HIDDEN", "0", "/preload");
+			#===============================#
+			# Formatação do preload e cache #
+			#===============================#
+			ifelse(is_mounted("/cache"), unmount("/cache"));
+			ifelse(is_mounted("/preload"), unmount("/preload"));
+			format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/CACHE", "0", "/cache");
+			format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/HIDDEN", "0", "/preload");
 
-#============================#
-# Area de instalação de .img #
-#============================#
-	if file_getprop("/tmp/aroma/CONFIG.prop","KERNEL") == "0" then
-		ui_print(" "); ui_print("<#101010><@center><b>KERNEL</b></#>");
-		if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center><#791919>Instalação desabilitada!"); endif;
-		if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center><#791919>Installation disabled!"); endif;
-	endif;
-
-	if file_getprop("/tmp/aroma/CONFIG.prop","KERNEL") == "1" then #[KERNE_BLOCK]
-		ui_print(" "); ui_print("<#101010><@center><b>KERNEL</b></#>");
-
-			if file_getprop("/tmp/aroma/CUSTOM.prop","KERNEL") == "ORE" then
-				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Fleshando kernel imagems.."); endif;
-				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Flashing kernel images.."); endif;
-				package_extract_file("META-INF/com/google/android/aroma/ukazxda/boot_ore.img", "/dev/block/platform/13540000.dwmmc0/by-name/BOOT");
-				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><#19441d><@center>Oreo-Kernel instalado.</#></b>"); endif;
-				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><#19441d><@center>Oreo-Kernel installed.</#></b>"); endif;
-			endif;
-			if file_getprop("/tmp/aroma/CUSTOM.prop","KERNEL") == "CRO" then
-				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Fleshando kernel imagems.."); endif;
-				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Flashing kernel images.."); endif;
-				package_extract_file("META-INF/com/google/android/aroma/ukazxda/boot_cro.img", "/dev/block/platform/13540000.dwmmc0/by-name/BOOT");
-				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><#19441d><@center>Cronos-Kernel instalado.</#></b>"); endif;
-				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><#19441d><@center>Cronos-Kernel installed.</#></b>"); endif;
+			#=========================================================================#
+			# Formatação da partição do vendor para evitar conflito em rom non-treble #
+			#=========================================================================#
+			if file_getprop("/tmp/ukazxda/Kyubey.prop","check_vendor") == "1" then
+				if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "false" then
+					ifelse(is_mounted("/vendor"), unmount("/vendor"));
+					format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "0", "/vendor");
+					ifelse(is_mounted("/vendor"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "/vendor"));
+					ifelse(is_mounted("/vendor"), unmount("/vendor"));
+				endif;
 			endif;
 
-	endif; #[KERNE_BLOCK]
-#===#
-
-		#===================================#
-		# Instalação do SYSTEM + Formatação #
-		#===================================#
-		if file_getprop("/tmp/aroma/CONFIG.prop","SYSTEM") == "0" then
-			ui_print(" "); ui_print("<#101010><@center><b>SYSTEM</b></#>");
-			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center><#791919>Instalação desabilitada!"); endif;
-			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center><#791919>Installation disabled!"); endif;
-		endif;
-	
-		if file_getprop("/tmp/aroma/CONFIG.prop","SYSTEM") == "1" then
-			set_progress(0.0); sleep(1); show_progress(1.0, "-055000"); ui_print(" "); ui_print("<#101010><@center><b>SYSTEM</b></#>");
-			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Formatted system partition"); endif;
-			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Partição de sistema formatada"); endif;
-			ifelse(is_mounted("/system"), unmount("/system"));
-			format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM", "0", "/system");
-			ifelse(is_mounted("/system"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM", "/system"));
-			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Atualizando o sistema, Aguarde"); endif;
-			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Updating the system, Please wait"); endif;
-			ifelse(is_mounted("/system"), unmount("/system"));
-			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><#19441d><@center>Instalação do sistema concluída</#></b>"); endif;
-			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><#19441d><@center>Completed system installation</#></b>"); endif;
-		endif;
-
-	#=========================================================================#
-	# Formatação da partição do vendor para evitar conflito em rom non-treble #
-	#=========================================================================#
-	if file_getprop("/tmp/ukazxda/Kyubey.prop","check_vendor") == "1" then
-		if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "false" then
-			ifelse(is_mounted("/vendor"), unmount("/vendor"));
-			format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "0", "/vendor");
-			ifelse(is_mounted("/vendor"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "/vendor"));
-			ifelse(is_mounted("/vendor"), unmount("/vendor"));
-		endif;
-	endif;
-
-		#================================#
-		# Instalação VENDOR + Formatação #
-		#================================#
-		if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "true" then
-
-			if file_getprop("/tmp/aroma/CONFIG.prop","VENDOR") == "0" then
-				ui_print(" "); ui_print("<#101010><@center><b>VENDOR</b></#>");
+			#===================================#
+			# Instalação do SYSTEM + Formatação #
+			#===================================#
+			if file_getprop("/tmp/aroma/CONFIG.prop","SYSTEM") == "0" then
+				ui_print(" "); ui_print("<#101010><@center><b>SYSTEM</b></#>");
 				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center><#791919>Instalação desabilitada!"); endif;
 				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center><#791919>Installation disabled!"); endif;
 			endif;
 
-			if file_getprop("/tmp/aroma/CONFIG.prop","VENDOR") == "1" then
-				set_progress(0.0); sleep(1); show_progress(1.0, "-004000"); ui_print(" "); ui_print("<#101010><@center><b>VENDOR</b></#>");
-				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Formatted vendor partition"); endif;
-				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Partição de vendor formatada"); endif;
+			if file_getprop("/tmp/aroma/CONFIG.prop","SYSTEM") == "1" then
+				set_progress(0.0); sleep(1); show_progress(1.0, "-050000"); ui_print(" "); ui_print("<#101010><@center><b>SYSTEM</b></#>");
+				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Formatted system partition"); endif;
+				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Partição de sistema formatada"); endif;
+				ifelse(is_mounted("/system"), unmount("/system"));
+				format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM", "0", "/system");
+				ifelse(is_mounted("/system"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM", "/system"));
+				ifelse(is_mounted("/system"), unmount("/system"));
+				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Fleshando System imagems, Aguarde"); endif;
+				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Flashing System images, Please wait"); endif;
+				package_extract_file("META-INF/com/google/android/aroma/ukazxda/LIMPO-1", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM");
+				ifelse(is_mounted("/system"), unmount("/system"));
+				ifelse(is_mounted("/system"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM", "/system"));
+				ifelse(is_mounted("/system"), unmount("/system"));
+				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><#19441d><@center>Instalação do sistema concluída</#></b>"); endif;
+				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><#19441d><@center>Completed system installation</#></b>"); endif;
+			endif;
+
+			#================================#
+			# Instalação VENDOR + Formatação #
+			#================================#
+			if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "true" then
+
+				if file_getprop("/tmp/aroma/CONFIG.prop","VENDOR") == "0" then
+					ui_print(" "); ui_print("<#101010><@center><b>VENDOR</b></#>");
+					if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center><#791919>Instalação desabilitada!"); endif;
+					if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center><#791919>Installation disabled!"); endif;
+				endif;
+
+				if file_getprop("/tmp/aroma/CONFIG.prop","VENDOR") == "1" then
+					set_progress(0.0); sleep(1); show_progress(1.0, "-004000"); ui_print(" "); ui_print("<#101010><@center><b>VENDOR</b></#>");
+					if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Formatted vendor partition"); endif;
+					if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Partição de vendor formatada"); endif;
+					ifelse(is_mounted("/vendor"), unmount("/vendor"));
+					format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "0", "/vendor");
+					ifelse(is_mounted("/vendor"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "/vendor"));
+					ifelse(is_mounted("/vendor"), unmount("/vendor"));
+					if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Fleshando vendor imagems, Aguarde"); endif;
+					if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Flashing vendor images, Please wait"); endif;
+					package_extract_file("META-INF/com/google/android/aroma/ukazxda/LIMPOS", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR");
+					ifelse(is_mounted("/vendor"), unmount("/vendor"));
+					ifelse(is_mounted("/vendor"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "/vendor"));
+					ifelse(is_mounted("/vendor"), unmount("/vendor"));
+					if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><#19441d><@center>Instalação do vendor concluída</#></b>"); endif;
+					if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><#19441d><@center>Completed vendor installation</#></b>"); endif;
+				endif;
+			endif;
+
+			#============================#
+			#   Instalação KERNEL boot   #
+			#============================#
+			if file_getprop("/tmp/aroma/CONFIG.prop","KERNEL") == "0" then
+				ui_print(" "); ui_print("<#101010><@center><b>KERNEL</b></#>");
+				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center><#791919>Instalação desabilitada!"); endif;
+				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center><#791919>Installation disabled!"); endif;
+			endif;
+
+			if file_getprop("/tmp/aroma/CONFIG.prop","KERNEL") == "1" then #[KERNE_BLOCK]
+				ui_print(" "); ui_print("<#101010><@center><b>KERNEL</b></#>");
+				if file_getprop("/tmp/aroma/CUSTOM.prop","KERNEL") == "ORE" then
+					if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Fleshando kernel imagems.."); endif;
+					if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Flashing kernel images.."); endif;
+					package_extract_file("META-INF/com/google/android/aroma/ukazxda/boot_ore.img", "/dev/block/platform/13540000.dwmmc0/by-name/BOOT");
+					if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><#19441d><@center>Oreo-Kernel instalado.</#></b>"); endif;
+					if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><#19441d><@center>Oreo-Kernel installed.</#></b>"); endif;
+				endif;
+				if file_getprop("/tmp/aroma/CUSTOM.prop","KERNEL") == "CRO" then
+					if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Fleshando kernel imagems.."); endif;
+					if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Flashing kernel images.."); endif;
+					package_extract_file("META-INF/com/google/android/aroma/ukazxda/boot_cro.img", "/dev/block/platform/13540000.dwmmc0/by-name/BOOT");
+					if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><#19441d><@center>Cronos-Kernel instalado.</#></b>"); endif;
+					if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><#19441d><@center>Cronos-Kernel installed.</#></b>"); endif;
+				endif;
+			endif; #[KERNE_BLOCK]
+	
+			#=======================================================#
+			# Montando partiços para alteracoes "/system"+"/vendor" #
+			#=======================================================#
+			if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "true" then ifelse(is_mounted("/vendor"), unmount("/vendor"));
+			ifelse(is_mounted("/vendor"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "/vendor")); endif;
+			ifelse(is_mounted("/system"), unmount("/system")); ifelse(is_mounted("/system"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM", "/system"));
+
+			#============================#
+			# Verificador de instalação  #
+			#============================#
+			ui_print(" "); ui_print("<@center><#4c1239><b>Kyubey</b></#>");
+			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Verificando a instalação..."); endif;
+			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Verifying the installation..."); endif;
+			run_program("/sbin/sh", "/tmp/ukazxda/kyubey.sh", "check_rom");
+			if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "false" then
+			run_program("/sbin/sh","/tmp/ukazxda/kyubey.sh","set_prop","/tmp/ukazxda/Kyubey.prop","vendor_check","1"); endif;
+
+			#=====================#
+			# Verifição aprovada! #
+			#=====================#
+			if file_getprop("/tmp/ukazxda/Kyubey.prop","vendor_check") == "1" then
+				if file_getprop("/tmp/ukazxda/Kyubey.prop","system_check") == "1" then # treble
+					if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><#19441d><b><@center>Nenhuma falha encontrada.</#></b>"); endif;
+					if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><#19441d><b><@center>Not a fault found.</#></b>"); endif;
+					run_program("/sbin/sh", "-c", "echo erro=1 >> /tmp/ukazxda/Kyubey.prop"); #[ERRO_BLOCK-TRURE]
+				endif;
+			endif;
+			if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "false" then # nom-treble
+				if file_getprop("/tmp/ukazxda/Kyubey.prop","system_check") == "1" then
+					if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><#19441d><b><@center>Nenhuma falha encontrada.</#></b>"); endif;
+					if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><#19441d><b><@center>Not a fault found.</#></b>"); endif;
+					run_program("/sbin/sh", "-c", "echo erro=1 >> /tmp/ukazxda/Kyubey.prop"); #[ERRO_BLOCK-TRURE]
+				endif;
+			endif;
+
+			#=============================================#
+			# Aviso de erro na verifiçãos system + vendor #
+			#=============================================#
+			if file_getprop("/tmp/ukazxda/Kyubey.prop","system_check") == "0" then
+				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<#791919><@center>Erro! ao instalar o sistema.</#>"); endif;
+				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<#791919><@center>Erro! when installing the system.</#>"); endif;
+			endif;
+			if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "true" then
+				if file_getprop("/tmp/ukazxda/Kyubey.prop","vendor_check") == "0" then
+				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<#791919><@center>Erro! ao instalar o vendor.</#>"); endif;
+				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<#791919><@center>Erro! when installing the vendor.</#>"); endif;
+				endif;
+			endif;
+
+			#==========================================#
+			# Area para alteraços em "system"+"vendor" #
+			#==========================================#
+			show_progress(1.0, "-000000"); 
+			if file_getprop("/tmp/ukazxda/Kyubey.prop","erro") == "1" then #[ERRO_BLOCK]
+
+				#=====================#
+
+
+				#     RESERVADA
+
+
+				#=====================#
+
+					#===========#
+					# wipe data #
+					#===========#
+					if file_getprop("/tmp/aroma/CONFIG.prop","WIPEDATA") == "0" then
+						if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center><#791919>Wipe data desabilitada!"); endif;
+						if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center><#791919>Wipe data disabled!"); endif;
+					endif;
+					if file_getprop("/tmp/aroma/CONFIG.prop","WIPEDATA") == "1" then
+						run_program("/sbin/sh", "/tmp/ukazxda/kyubey.sh", "wipe_data");
+						if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><@center>Wipe data... <#19441d>feito!</#>"); endif;
+						if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><@center>Wipe data... <#19441d>done!</#>"); endif;
+					endif;
+			endif; #[ERRO_BLOCK]
+
+			#==========================================#
+			# Fechando "system"+"Vendor" pos alteração #
+			#==========================================#
+			if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "true" then
+			ifelse(is_mounted("/vendor"), unmount("/vendor")); endif;
+			ifelse(is_mounted("/system"), unmount("/system")); set_progress(1.0);
+
+			#=====================#
+			# Verifição aprovada! #
+			#=====================#
+			if file_getprop("/tmp/ukazxda/Kyubey.prop","erro") == "1" then ui_print(" "); set_progress(1.0);
+				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center><b><#19441d>Feito!</#></b>"); endif;
+				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center><b><#19441d>Done!</#></b>"); endif;
+				if file_getprop("/tmp/aroma/CONFIG.prop","REBOOT") == "1" then
+					ui_print("<@center><b>Reboot system...</b>");sleep(3);
+					run_program("/sbin/sh", "-c", "reboot system");
+				endif; delete("/tmp/ukazxda/kyubey.sh"); abort(" "); # Finalizando script
+			endif;
+
+			#==========================#
+			# Verifiçãos não aprovada! #
+			#==========================#
+			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Found fault :(!"); endif;
+			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Falha encontrada, :("); endif;
+			set_progress(1.0); ui_print(" "); ui_print("<b><@center><b><#selectbg_g><#791919>Erro!</#></#></b>");
+
+			#========================================================#
+			# Formatação "system"+"vendor" para corrigir erro na img #
+			#========================================================#
+			if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "true" then
 				ifelse(is_mounted("/vendor"), unmount("/vendor"));
 				format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "0", "/vendor");
 				ifelse(is_mounted("/vendor"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "/vendor"));
 				ifelse(is_mounted("/vendor"), unmount("/vendor"));
-				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Fleshando vendor imagems, Aguarde"); endif;
-				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Flashing vendor images, Please wait"); endif;
-				package_extract_file("META-INF/com/google/android/aroma/ukazxda/LIMPOV", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR");
-				ifelse(is_mounted("/vendor"), unmount("/vendor"));
-				ifelse(is_mounted("/vendor"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "/vendor"));
-				ifelse(is_mounted("/vendor"), unmount("/vendor"));
-				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><#19441d><@center>Instalação do vendor concluída</#></b>"); endif;
-				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><#19441d><@center>Completed vendor installation</#></b>"); endif;
 			endif;
-		endif;
-#==#
+			ifelse(is_mounted("/system"), unmount("/system"));
+			format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM", "0", "/system");
+			ifelse(is_mounted("/system"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM", "/system"));
+			ifelse(is_mounted("/system"), unmount("/system"));
+			delete("/tmp/ukazxda/kyubey.sh");
+			abort(" "); # Finalizando script
 
-	#=======================================================#
-	# Montando partiços para alteracoes "/system"+"/vendor" #
-	#=======================================================#
-	if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "true" then ifelse(is_mounted("/vendor"), unmount("/vendor"));
-	ifelse(is_mounted("/vendor"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "/vendor")); endif;
-	ifelse(is_mounted("/system"), unmount("/system")); ifelse(is_mounted("/system"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM", "/system"));
-
-	#============================#
-	# Verificador de instalação  #
-	#============================#
-	ui_print(" "); ui_print("<@center><#4c1239><b>Kyubey</b></#>");
-	if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Verificando a instalação..."); endif;
-	if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Verifying the installation..."); endif;
-	run_program("/sbin/sh", "/tmp/ukazxda/kyubey.sh", "check_rom");
-	if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "false" then
-	run_program("/sbin/sh","/tmp/ukazxda/kyubey.sh","set_prop","/tmp/ukazxda/Kyubey.prop","vendor_check","1"); endif;
-
-	#=====================#
-	# Verifição aprovada! #
-	#=====================#
-	if file_getprop("/tmp/ukazxda/Kyubey.prop","vendor_check") == "1" then
-		if file_getprop("/tmp/ukazxda/Kyubey.prop","system_check") == "1" then # treble
-			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><#19441d><b><@center>Nenhuma falha encontrada.</#></b>"); endif;
-			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><#19441d><b><@center>Not a fault found.</#></b>"); endif;
-			run_program("/sbin/sh", "-c", "echo erro=1 >> /tmp/ukazxda/Kyubey.prop"); #[ERRO_BLOCK-TURE]
-		endif;
-	endif;
-	if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "false" then # nom-treble
-		if file_getprop("/tmp/ukazxda/Kyubey.prop","system_check") == "1" then
-			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><#19441d><b><@center>Nenhuma falha encontrada.</#></b>"); endif;
-			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><#19441d><b><@center>Not a fault found.</#></b>"); endif;
-			run_program("/sbin/sh", "-c", "echo erro=1 >> /tmp/ukazxda/Kyubey.prop"); #[ERRO_BLOCK-TURE]
-		endif;
-	endif;
-
-	#=============================================#
-	# Aviso de erro na verifiçãos system + vendor #
-	#=============================================#
-	if file_getprop("/tmp/ukazxda/Kyubey.prop","system_check") == "0" then
-		if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<#791919><@center>Espaço insuficiente no system.</#>"); endif;
-		if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<#791919><@center>Insufficient space on system.</#>"); endif;
-	endif;
-	if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "true" then
-		if file_getprop("/tmp/ukazxda/Kyubey.prop","vendor_check") == "0" then
-			if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<#791919><@center>Espaço insuficiente no vendor.</#>"); endif;
-			if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<#791919><@center>Insufficient space on vendor.</#>"); endif;
-		endif;
-	endif;
-
-#==========================================#
-# Area para alteraços em "system"+"vendor" #
-#==========================================#
-	show_progress(1.0, "-000000"); 
-	if file_getprop("/tmp/ukazxda/Kyubey.prop","erro") == "1" then #[ERRO_BLOCK]
-
-	#=====================#
-
-
-#		  RESERVADA
-
-
-	#=====================#
+		endif; #[VENDOR_BLOCK]
+	endif; #[DEVICE_BLOCK_2]
+endif; #[KYUBEY_SH]
 
 #===#
-
-			#===========#
-			# wipe data #
-			#===========#
-			if file_getprop("/tmp/aroma/CONFIG.prop","WIPEDATA") == "0" then
-				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center><#791919>Wipe data desabilitada!"); endif;
-				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center><#791919>Wipe data disabled!"); endif;
-			endif;
-			if file_getprop("/tmp/aroma/CONFIG.prop","WIPEDATA") == "1" then
-				run_program("/sbin/sh", "/tmp/ukazxda/kyubey.sh", "wipe_data");
-				if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<b><@center>Wipe data... <#19441d>feito!</#>"); endif;
-				if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<b><@center>Wipe data... <#19441d>done!</#>"); endif;
-			endif;
-
-	endif; #[ERRO_BLOCK]
-
-	#==========================================#
-	# Fechando "system"+"Vendor" pos alteração #
-	#==========================================#
-	if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "true" then
-	ifelse(is_mounted("/vendor"), unmount("/vendor")); endif;
-	ifelse(is_mounted("/system"), unmount("/system")); set_progress(1.0);
-
-	#=====================#
-	# Verifição aprovada! #
-	#=====================#
-	if file_getprop("/tmp/ukazxda/Kyubey.prop","erro") == "1" then ui_print(" "); set_progress(1.0);
-		if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center><b><#19441d>Feito!</#></b>"); endif;
-		if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center><b><#19441d>Done!</#></b>"); endif;
-		if file_getprop("/tmp/aroma/CONFIG.prop","REBOOT") == "1" then
-			ui_print("<@center><b>Reboot system...</b>");sleep(3);
-			run_program("/sbin/sh", "-c", "reboot system");
-		endif; delete("/tmp/ukazxda/kyubey.sh"); abort(" "); # Finalizando script
-	endif;
-
-	#==========================#
-	# Verifiçãos não aprovada! #
-	#==========================#
-	if file_getprop("/tmp/aroma/home.prop","selected") == "1" then ui_print("<@center>Found fault :(!"); endif;
-	if file_getprop("/tmp/aroma/home.prop","selected") == "2" then ui_print("<@center>Falha encontrada, :("); endif;
-	set_progress(1.0); ui_print(" "); ui_print("<b><@center><b><#selectbg_g><#791919>Erro!</#></#></b>");
-
-	#========================================================#
-	# Formatação "system"+"vendor" para corrigir erro na img #
-	#========================================================#
-		if file_getprop("/tmp/ukazxda/Kyubey.prop","treble") == "true" then
-			ifelse(is_mounted("/vendor"), unmount("/vendor"));
-			format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "0", "/vendor");
-			ifelse(is_mounted("/vendor"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/VENDOR", "/vendor"));
-			ifelse(is_mounted("/vendor"), unmount("/vendor"));
-		endif;
-		ifelse(is_mounted("/system"), unmount("/system"));
-		format("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM", "0", "/system");
-		ifelse(is_mounted("/system"), "", mount("ext4", "EMMC", "/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM", "/system"));
-		ifelse(is_mounted("/system"), unmount("/system"));
-		delete("/tmp/ukazxda/kyubey.sh");
-		abort(" "); # Finalizando script
-
-endif; #[VENDOR_BLOCK]
-endif; #[KYUBEN_SH]
-endif; #[DEVICE_BLOCK]
-
 	#==========================#
 	# Erro ná Script kyubey.sh #
 	#==========================#

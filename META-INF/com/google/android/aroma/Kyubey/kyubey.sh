@@ -29,11 +29,13 @@ if [ $MAGIA1 = "check_volume" ]; then
 	REFERENCE_VALUE_VENDOR=$(grep 'VENDOR_VOLUME_MAX=' $BUILD_PROP_PATH | cut -d'=' -f2)
 	if [ $(echo "$SYSTEM_SIZE_MB < $REFERENCE_VALUE_SYSTEM" | bc) -eq 1 ]; then
 	  echo "check_volume_system=0" >> $BUILD_PROP_PATH
+	  echo "check_volume=0" >> $BUILD_PROP_PATH
 	else
 	  echo "check_volume_system=1" >> $BUILD_PROP_PATH
 	fi
 	if [ $(echo "$VENDOR_SIZE_MB < $REFERENCE_VALUE_VENDOR" | bc) -eq 1 ]; then
 	  echo "check_volume_vendor=0" >> $BUILD_PROP_PATH
+	  echo "check_volume=0" >> $BUILD_PROP_PATH
 	else
 	  echo "check_volume_vendor=1" >> $BUILD_PROP_PATH
 	fi

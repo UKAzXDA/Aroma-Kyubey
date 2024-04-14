@@ -16,15 +16,24 @@ if prop("home.pt.prop","selected")=="1" then
 if confirm("Start installation?", "", "No","Yes") == "no" then back("1"); endif;
 	ini_set("text_next", "Finalize");
 	install("","\n<#3c3c3c>Updating...","@d","\n<#3c3c3c>Finalized!");
+	if file_getprop("/tmp/ukazxda/Kyubey.prop", "check_volume") == "0" then
+		ini_set(" ", "OK");
+		form("", "<b><#3c3c3c>Repartition!:</b>", "@alert", "CONFIG.prop",
+		"REPARTITION", "", "", "group",
+		"REPARTITION", "Repartitioning:", "<#791919>Warning!</#> All your files will be lost: Internal storage, data, system, vendor etc. Data formatting will be necessary after reboot. Confirm with ..yes To proceed, activate it, if you have not backed up or do not wish to perform formatting, do not activate, just proceed.", "check");
+		install("", "\n<#3c3c3c>Repartitioning...", "@d", "\n<#3c3c3c>Finished!");
+	endif;
 	if file_getprop("/tmp/ukazxda/Kyubey.prop","erro") == "1" then
-	if confirm("Reboot?", "", "No","Yes") == "yes" then
-	reboot("onfinish"); exit(""); endif; exit(""); endif;
+		if confirm("Reboot?", "", "No","Yes") == "yes" then
+			reboot("onfinish"); exit("");
+		endif; exit("");
+	endif;
 	alert("<b><#791919>ERRO","<@center><b>Something went wrong! :(", ""); 
 	exit("");
 endif;
 
 if prop("home.pt.prop","selected")=="2" then
-ini_set("text_next", " ");
+	ini_set("text_next", " ");
 	viewbox("","\n<#3c3c3c><b>System Info\n\n\n</b>"+
 	"ROM\t\t\t: <#3c3c3c>"+ini_get("rom_name")+"</#>\n"+
 	"OneUI\t\t\t: <#3c3c3c>1.1</#>\n"+
@@ -63,9 +72,9 @@ if prop("home.pt.prop","selected")=="4" then
 	back("2");
 endif;
 
-#==========================================================================================#
+#==============================================================================================#
 # Backup code: "VENDOR","    INSTALL VENDOR:", "    "+ini_get("rom_name")+"", "check.checked", #
-#==========================================================================================#
+#==============================================================================================#
 if prop("home.pt.prop","selected")=="5" then
 	ini_set("text_next", " ");
 		form("","<#3c3c3c><b>Instalador Config:</b>","@b","CONFIG.prop",
