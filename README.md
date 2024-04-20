@@ -1,4 +1,5 @@
 <img src="Aroma-Kyubey.png">
+
 # Aroma-Kyubey  Version 3.00b1
 
 Aroma-Kyubey é uma ferramenta criada para a instalação de ROMs, que oferece uma interface touch personalizável para que os usuários possam escolher as opções de instalação de acordo com suas necessidades. Este aplicativo otimiza o processo de instalação, removendo a necessidade de limpeza manual de partições, criação de vendor ou configuração manual do Aroma.
