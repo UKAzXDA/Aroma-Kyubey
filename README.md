@@ -1,4 +1,4 @@
-<img srm="">
+<img srm="Aroma-Kyubey.png">
 
 # Aroma-Kyubey  Version 3.00b1
 
