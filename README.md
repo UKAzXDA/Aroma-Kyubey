@@ -1,3 +1,4 @@
+<img srm="">
 
 # Aroma-Kyubey  Version 3.00b1
 
